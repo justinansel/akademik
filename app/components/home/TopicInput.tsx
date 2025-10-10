@@ -46,9 +46,6 @@ export default function TopicInput({
         `}
       />
       <div className="mt-2 flex justify-between items-center text-sm">
-        <span className="text-neutral-500">
-          Min {minLength} characters
-        </span>
         <span
           className={`
             ${isNearLimit ? 'text-semantic-warning font-medium' : 'text-neutral-500'}

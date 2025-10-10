@@ -23,7 +23,7 @@ export default function SubmitButton({
         ${
           disabled
             ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
-            : 'bg-brand-primary text-white hover:bg-blue-700 focus:ring-brand-primary cursor-pointer'
+            : 'bg-blue-500 text-white hover:bg-blue-700 focus:ring-blue-300 cursor-pointer'
         }
       `}
     >
