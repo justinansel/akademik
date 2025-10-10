@@ -5,6 +5,7 @@ import { ThemeProvider } from './components/common/ThemeProvider';
 import { useTheme } from './hooks/useTheme';
 import { useSubmissionState } from './hooks/useSubmissionState';
 import { useInputValidation } from './hooks/useInputValidation';
+import { useContentGeneration } from './hooks/useContentGeneration';
 import InputSection from './components/home/InputSection';
 import AudioPlayerSection from './components/home/AudioPlayerSection';
 
@@ -16,14 +17,25 @@ function HomePageContent() {
   const { state, currentTopic, inputValue, setInputValue, submit } = useSubmissionState();
   const { isValid } = useInputValidation(inputValue);
   const { themeMode, theme, transformToUrban } = useTheme();
+  const { content, isGenerating, error, generate, clearError } = useContentGeneration();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (isValid) {
+      clearError();  // Clear previous errors
       submit(inputValue);
+      // Generate content instead of waiting for mock timer
+      await generate(inputValue);
     }
   };
 
-  // Trigger transformation when audio player appears
+  const handleRetry = async () => {
+    if (currentTopic) {
+      clearError();
+      await generate(currentTopic.text);
+    }
+  };
+
+  // Trigger transformation when audio player appears (content loaded)
   useEffect(() => {
     if (state === 'ready' && themeMode === 'corporate') {
       transformToUrban();
@@ -42,13 +54,16 @@ function HomePageContent() {
           value={inputValue}
           onChange={setInputValue}
           onSubmit={handleSubmit}
-          disabled={state === 'loading'}
+          disabled={state === 'loading' || isGenerating}
         />
         
         <AudioPlayerSection
           visible={state !== 'initial'}
-          loading={state === 'loading'}
+          loading={state === 'loading' || isGenerating}
           topic={currentTopic?.text ?? ''}
+          content={content}
+          error={error}
+          onRetry={handleRetry}
         />
       </div>
     </main>

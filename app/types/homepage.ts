@@ -44,6 +44,9 @@ export interface AudioPlayerSectionProps {
   visible: boolean;
   loading: boolean;
   topic: string;
+  content?: string;  // Generated content from API
+  error?: string | null;  // Error message
+  onRetry?: () => void;  // Retry callback
 }
 
 export interface LoadingSpinnerProps {
