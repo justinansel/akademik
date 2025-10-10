@@ -82,6 +82,10 @@ export default function MockAudioPlayer({ topic, disabled }: MockAudioPlayerProp
         </div>
 
         </div>
+          
+        <div className="text-white">
+          lyrics go here...
+        </div>
 
       </div>
     </div>
