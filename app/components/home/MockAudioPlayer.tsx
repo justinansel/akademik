@@ -1,12 +1,20 @@
 import type { MockAudioPlayerProps } from '@/app/types/homepage';
 import { useTheme } from '@/app/hooks/useTheme';
 import AudioControls from './AudioControls';
+import GeneratedContent from './GeneratedContent';
+import ErrorMessage from './ErrorMessage';
 
 /**
- * Mock audio player UI with disabled controls
+ * Audio player UI with generated content display
  * Theme-aware: Corporate (clean player) or Urban (vintage bold player)
  */
-export default function MockAudioPlayer({ topic, disabled }: MockAudioPlayerProps) {
+interface EnhancedMockAudioPlayerProps extends MockAudioPlayerProps {
+  content?: string;  // Generated content to display
+  error?: string | null;  // Error message if generation failed
+  onRetry?: () => void;  // Retry callback for errors
+}
+
+export default function MockAudioPlayer({ topic, disabled, content, error, onRetry }: EnhancedMockAudioPlayerProps) {
   const { themeMode, theme } = useTheme();
 
   return (
@@ -77,15 +85,23 @@ export default function MockAudioPlayer({ topic, disabled }: MockAudioPlayerProp
           </div>
         </div>
 
-        <div>
-          <AudioControls disabled={disabled} />
-        </div>
-
-        </div>
-          
-        <div className="text-white">
-          lyrics go here...
-        </div>
+         <div>
+           <AudioControls disabled={disabled} />
+         </div>
+ 
+         </div>
+           
+         {error && onRetry ? (
+           <ErrorMessage message={error} onRetry={onRetry} />
+         ) : content ? (
+           <GeneratedContent text={content} topic={topic} />
+         ) : (
+           <div className="mt-6 p-6 bg-neutral-50 rounded-lg">
+             <p className="text-neutral-500 italic text-center">
+               lyrics go here...
+             </p>
+           </div>
+         )}
 
       </div>
     </div>

@@ -5,6 +5,8 @@ Auto-generated from all feature plans. Last updated: 2025-10-10
 ## Active Technologies
 - TypeScript 5.x with Next.js 15.5.4 and React 19.1.0 + Next.js (App Router), React, Tailwind CSS 4.x, TypeScrip (001-build-homepage-with)
 - Client-side state only (no persistence across page refreshes) (002-dynamic-visual-style)
+- TypeScript 5.x with Next.js 15.5.4 and React 19.1.0 + Next.js (App Router), React, Tailwind CSS 4.x, TypeScript, OpenAI SDK (003-integrate-ai-content)
+- Client-side state only (generated content in memory, no persistence) (003-integrate-ai-content)
 
 ## Project Structure
 ```
@@ -19,6 +21,7 @@ npm test [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNO
 TypeScript 5.x with Next.js 15.5.4 and React 19.1.0: Follow standard conventions
 
 ## Recent Changes
+- 003-integrate-ai-content: Added TypeScript 5.x with Next.js 15.5.4 and React 19.1.0 + Next.js (App Router), React, Tailwind CSS 4.x, TypeScript, OpenAI SDK
 - 002-dynamic-visual-style: Added TypeScript 5.x with Next.js 15.5.4 and React 19.1.0 + Next.js (App Router), React, Tailwind CSS 4.x, TypeScrip
 - 001-build-homepage-with: Added TypeScript 5.x with Next.js 15.5.4 and React 19.1.0 + Next.js (App Router), React, Tailwind CSS 4.x, TypeScrip
 
