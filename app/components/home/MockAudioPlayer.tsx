@@ -1,6 +1,7 @@
 import type { MockAudioPlayerProps } from '@/app/types/homepage';
 import { useTheme } from '@/app/hooks/useTheme';
 import AudioControls from './AudioControls';
+import AudioPlayer from './AudioPlayer';
 import GeneratedContent from './GeneratedContent';
 import ErrorMessage from './ErrorMessage';
 
@@ -12,9 +13,23 @@ interface EnhancedMockAudioPlayerProps extends MockAudioPlayerProps {
   content?: string;  // Generated content to display
   error?: string | null;  // Error message if generation failed
   onRetry?: () => void;  // Retry callback for errors
+  audioUrl?: string;  // URL of mixed audio track for playback
+  isGenerating?: boolean;  // Audio generation in progress
+  audioError?: string;  // Audio generation error message
+  generationStatus?: 'idle' | 'generating-voice' | 'generating-music' | 'mixing' | 'ready' | 'error';  // Current generation phase
 }
 
-export default function MockAudioPlayer({ topic, disabled, content, error, onRetry }: EnhancedMockAudioPlayerProps) {
+export default function MockAudioPlayer({ 
+  topic, 
+  disabled, 
+  content, 
+  error, 
+  onRetry,
+  audioUrl,
+  isGenerating,
+  audioError,
+  generationStatus = 'idle'
+}: EnhancedMockAudioPlayerProps) {
   const { themeMode, theme } = useTheme();
 
   return (
@@ -86,12 +101,28 @@ export default function MockAudioPlayer({ topic, disabled, content, error, onRet
         </div>
 
          <div>
-           <AudioControls disabled={disabled} />
+           {isGenerating ? (
+             <div className="text-center py-8">
+               <p className="text-neutral-600 animate-pulse">
+                 {generationStatus === 'mixing' 
+                   ? 'Mixing voice and music...' 
+                   : 'Creating voice and music...'}
+               </p>
+             </div>
+           ) : audioUrl ? (
+             <AudioPlayer audioUrl={audioUrl} />
+           ) : (
+             <AudioControls disabled={disabled} />
+           )}
          </div>
  
          </div>
            
-         {error && onRetry ? (
+         {audioError ? (
+           <div className="mt-6">
+             <ErrorMessage message={audioError} onRetry={onRetry || (() => {})} />
+           </div>
+         ) : error && onRetry ? (
            <ErrorMessage message={error} onRetry={onRetry} />
          ) : content ? (
            <GeneratedContent text={content} topic={topic} />

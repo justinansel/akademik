@@ -14,6 +14,10 @@ export default function AudioPlayerSection({
   content,
   error,
   onRetry,
+  audioUrl,
+  isGenerating,
+  audioError,
+  generationStatus,
 }: AudioPlayerSectionProps) {
   const { themeMode, theme } = useTheme();
 
@@ -47,7 +51,17 @@ export default function AudioPlayerSection({
           />
         </div>
       ) : (
-        <MockAudioPlayer topic={topic} disabled={true} content={content} error={error} onRetry={onRetry} />
+        <MockAudioPlayer 
+          topic={topic} 
+          disabled={true} 
+          content={content} 
+          error={error} 
+          onRetry={onRetry}
+          audioUrl={audioUrl}
+          isGenerating={isGenerating}
+          audioError={audioError}
+          generationStatus={generationStatus}
+        />
       )}
     </section>
   );
