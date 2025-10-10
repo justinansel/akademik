@@ -1,10 +1,12 @@
 import type { InputSectionProps } from '@/app/types/homepage';
+import { useTheme } from '@/app/hooks/useTheme';
 import TopicInput from './TopicInput';
 import SubmitButton from './SubmitButton';
 
 /**
  * Container for "Let's learn about" input interface
  * Composes TopicInput and SubmitButton
+ * Theme-aware: Corporate (professional) or Urban (bold street style)
  */
 export default function InputSection({
   onSubmit,
@@ -12,6 +14,7 @@ export default function InputSection({
   value,
   onChange,
 }: InputSectionProps) {
+  const { themeMode, theme } = useTheme();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!disabled && value.trim().length >= 2) {
@@ -30,8 +33,31 @@ export default function InputSection({
       className="w-full max-w-3xl mx-auto"
       aria-label="Learning topic input section"
     >
-      <div className="bg-white rounded-xl shadow-sm p-8">
-        <h1 className="text-2xl font-semibold text-neutral-800 mb-6">
+      <div 
+        className={`
+          p-8
+          ${themeMode === 'corporate' 
+            ? 'bg-white rounded-xl shadow-sm' 
+            : 'bg-neutral-800 rounded-md shadow-bold border-thick border-primary theme-urban-enhanced'}
+        `}
+        style={{
+          backgroundColor: theme.colors.surface,
+          borderColor: themeMode === 'urban' ? theme.colors.border : undefined,
+          boxShadow: theme.effects.shadow,
+        }}
+      >
+        <h1 
+          className={`
+            text-2xl mb-6
+            ${themeMode === 'corporate' ? 'font-semibold text-neutral-800' : 'font-black text-white theme-urban-text'}
+          `}
+          style={{
+            fontFamily: theme.typography.fontFamily,
+            fontWeight: theme.typography.headingWeight,
+            color: theme.colors.text,
+            textShadow: theme.typography.textShadow,
+          }}
+        >
           Let&apos;s learn about...
         </h1>
         
