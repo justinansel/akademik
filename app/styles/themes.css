@@ -1,0 +1,45 @@
+/* Theme transition utilities for smooth visual transformation */
+
+.theme-transition {
+  transition-property: background-color, color, border-color, box-shadow, 
+                       font-family, font-weight, text-shadow;
+  transition-duration: 0.7s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .theme-transition {
+    transition-duration: 2.5s;
+  }
+}
+
+/* Apply transitions to all children */
+.theme-transition * {
+  transition: inherit;
+}
+
+/* Urban theme text effects for readability on vibrant backgrounds */
+.theme-urban-text {
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.9),
+    -1px -1px 2px rgba(0, 0, 0, 0.5);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.6);
+  paint-order: stroke fill;
+}
+
+/* Bold shadow effect for urban theme */
+.shadow-bold {
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+/* Thick borders for urban aesthetic */
+.border-thick {
+  border-width: 3px;
+}
+
+/* Urban theme visual enhancements */
+.theme-urban-enhanced {
+  filter: saturate(1.3) contrast(1.1);
+}
+

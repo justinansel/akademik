@@ -1,16 +1,19 @@
 import type { AudioPlayerSectionProps } from '@/app/types/homepage';
+import { useTheme } from '@/app/hooks/useTheme';
 import LoadingSpinner from './LoadingSpinner';
 import MockAudioPlayer from './MockAudioPlayer';
 
 /**
  * Container for "With Ahmed da' Akademik" audio player area
- * Shows LoadingSpinner during loading, MockAudioPlayer when ready
+ * Theme-aware: Corporate (clean) or Urban (bold energetic)
  */
 export default function AudioPlayerSection({
   visible,
   loading,
   topic,
 }: AudioPlayerSectionProps) {
+  const { themeMode, theme } = useTheme();
+
   if (!visible) {
     return null;
   }
@@ -21,7 +24,19 @@ export default function AudioPlayerSection({
       aria-label="Audio player section"
     >
       {loading ? (
-        <div className="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-sm p-8">
+        <div 
+          className={`
+            w-full max-w-3xl mx-auto p-8
+            ${themeMode === 'corporate' 
+              ? 'bg-white rounded-xl shadow-sm' 
+              : 'bg-neutral-800 rounded-md shadow-bold border-thick theme-urban-enhanced'}
+          `}
+          style={{
+            backgroundColor: theme.colors.surface,
+            borderColor: themeMode === 'urban' ? theme.colors.border : undefined,
+            boxShadow: theme.effects.shadow,
+          }}
+        >
           <LoadingSpinner
             size="lg"
             label="Preparing your learning experience..."

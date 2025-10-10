@@ -1,14 +1,17 @@
 import type { LoadingSpinnerProps } from '@/app/types/homepage';
+import { useTheme } from '@/app/hooks/useTheme';
 
 /**
  * Animated loading spinner for 2-second loading state
- * Pure CSS animation, accessible
+ * Theme-aware: Corporate (subtle) or Urban (vibrant)
  */
 export default function LoadingSpinner({
   size = 'md',
   label = 'Processing your request...',
   ariaLabel = 'Loading audio content',
 }: LoadingSpinnerProps) {
+  const { themeMode, theme } = useTheme();
+
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-12 h-12',
@@ -24,12 +27,29 @@ export default function LoadingSpinner({
       <div
         className={`
           ${sizeClasses[size]}
-          border-4 border-neutral-200 border-t-brand-primary
-          rounded-full animate-spin
+          border-4 rounded-full animate-spin
+          ${themeMode === 'corporate' 
+            ? 'border-neutral-200 border-t-brand-primary' 
+            : 'border-neutral-700'}
         `}
+        style={{
+          borderTopColor: theme.colors.primary,
+          borderRightColor: themeMode === 'urban' ? theme.colors.secondary : undefined,
+        }}
       />
       {label && (
-        <p className="mt-4 text-neutral-600 text-sm font-medium">
+        <p 
+          className={`
+            mt-4 text-sm font-medium
+            ${themeMode === 'corporate' ? 'text-neutral-600' : 'text-white theme-urban-text'}
+          `}
+          style={{
+            color: themeMode === 'urban' ? theme.colors.text : undefined,
+            fontFamily: theme.typography.fontFamily,
+            fontWeight: theme.typography.bodyWeight,
+            textShadow: theme.typography.textShadow,
+          }}
+        >
           {label}
         </p>
       )}
