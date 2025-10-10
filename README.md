@@ -2,6 +2,24 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Setup
+
+Create a `.env.local` file in the project root with the following API keys:
+
+```bash
+# OpenAI API Key (for lyric generation)
+OPENAI_API_KEY=your_openai_api_key_here
+
+# ElevenLabs API Key (for voice and music generation)
+ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+```
+
+**How to obtain API keys:**
+- **OpenAI**: Get your API key from [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+- **ElevenLabs**: Get your API key from [https://elevenlabs.io/app/settings/api-keys](https://elevenlabs.io/app/settings/api-keys)
+
+### Running the Development Server
+
 First, run the development server:
 
 ```bash

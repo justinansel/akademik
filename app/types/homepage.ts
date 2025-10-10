@@ -47,6 +47,10 @@ export interface AudioPlayerSectionProps {
   content?: string;  // Generated content from API
   error?: string | null;  // Error message
   onRetry?: () => void;  // Retry callback
+  audioUrl?: string;  // URL of mixed audio track
+  isGenerating?: boolean;  // Audio generation in progress
+  audioError?: string;  // Audio generation error
+  generationStatus?: 'idle' | 'generating-voice' | 'generating-music' | 'mixing' | 'ready' | 'error';  // Audio generation phase
 }
 
 export interface LoadingSpinnerProps {

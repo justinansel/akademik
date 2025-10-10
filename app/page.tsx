@@ -6,6 +6,7 @@ import { useTheme } from './hooks/useTheme';
 import { useSubmissionState } from './hooks/useSubmissionState';
 import { useInputValidation } from './hooks/useInputValidation';
 import { useContentGeneration } from './hooks/useContentGeneration';
+import { useAudioGeneration } from './hooks/useAudioGeneration';
 import InputSection from './components/home/InputSection';
 import AudioPlayerSection from './components/home/AudioPlayerSection';
 
@@ -18,6 +19,7 @@ function HomePageContent() {
   const { isValid } = useInputValidation(inputValue);
   const { themeMode, theme, transformToUrban } = useTheme();
   const { content, isGenerating, error, generate, clearError } = useContentGeneration();
+  const { audioUrl, isGenerating: isGeneratingAudio, error: audioError, status: audioStatus, generate: generateAudio } = useAudioGeneration();
 
   const handleSubmit = async () => {
     if (isValid) {
@@ -27,6 +29,13 @@ function HomePageContent() {
       await generate(inputValue);
     }
   };
+
+  // Trigger audio generation after lyrics are ready
+  useEffect(() => {
+    if (content && !isGenerating && !audioUrl && !isGeneratingAudio) {
+      generateAudio(content);
+    }
+  }, [content, isGenerating, audioUrl, isGeneratingAudio, generateAudio]);
 
   const handleRetry = async () => {
     if (currentTopic) {
@@ -61,9 +70,13 @@ function HomePageContent() {
           visible={state !== 'initial'}
           loading={state === 'loading' || isGenerating}
           topic={currentTopic?.text ?? ''}
-          content={content}
-          error={error}
+          content={content ?? undefined}
+          error={error ?? undefined}
           onRetry={handleRetry}
+          audioUrl={audioUrl}
+          isGenerating={isGeneratingAudio}
+          audioError={audioError}
+          generationStatus={audioStatus}
         />
       </div>
     </main>
