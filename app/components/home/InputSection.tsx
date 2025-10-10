@@ -46,20 +46,23 @@ export default function InputSection({
           boxShadow: theme.effects.shadow,
         }}
       >
-        <h1 
-          className={`
-            text-2xl mb-6
-            ${themeMode === 'corporate' ? 'font-semibold text-neutral-800' : 'font-black text-white theme-urban-text'}
-          `}
-          style={{
-            fontFamily: theme.typography.fontFamily,
-            fontWeight: theme.typography.headingWeight,
-            color: theme.colors.text,
-            textShadow: theme.typography.textShadow,
-          }}
-        >
-          Let&apos;s learn about...
-        </h1>
+        <div className="mb-6">
+          <h1 
+            className={`
+              text-2xl mb-2
+              ${themeMode === 'corporate' ? 'font-semibold text-neutral-800' : 'font-black text-white theme-urban-text'}
+            `}
+            style={{
+              fontFamily: theme.typography.fontFamily,
+              fontWeight: theme.typography.headingWeight,
+              color: theme.colors.text,
+              textShadow: theme.typography.textShadow,
+            }}
+          >
+            Lecture Generator Studio
+          </h1>
+          <p className="text-sm italic text-gray-500">Generate a lecture about AI topics...</p>
+        </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div onKeyDown={handleKeyDown}>

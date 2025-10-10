@@ -22,15 +22,15 @@ export default function SubmitButton({
       className={`
         px-6 py-3 font-medium
         transition-all duration-200
-        focus:outline-none focus:ring-2 focus:ring-offset-2
+        focus:outline-none focus:ring-2 focus:ring-offset-2 text-white
         ${themeMode === 'corporate' ? 'rounded-lg' : 'rounded-md border-thick'}
         ${themeMode === 'urban' ? 'theme-urban-text' : ''}
         ${
           disabled
-            ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
+            ? 'bg-neutral-300 cursor-not-allowed'
             : themeMode === 'corporate'
-              ? 'bg-blue-500 text-white hover:bg-blue-700 focus:ring-blue-300 cursor-pointer'
-              : 'text-white hover:opacity-90 focus:ring-accent cursor-pointer shadow-bold'
+              ? 'bg-blue-500 !text-white hover:bg-blue-700 focus:ring-blue-300 cursor-pointer'
+              : '!text-white hover:opacity-90 focus:ring-accent cursor-pointer shadow-bold'
         }
       `}
       style={{

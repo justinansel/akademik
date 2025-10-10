@@ -39,27 +39,14 @@ export default function MockAudioPlayer({ topic, disabled }: MockAudioPlayerProp
           >
             With Ahmed da&apos; Akademik
           </h2>
-          <span 
-            className={`
-              text-sm px-3 py-1 rounded-full
-              ${themeMode === 'corporate' 
-                ? 'text-neutral-500 bg-neutral-100' 
-                : 'text-white bg-secondary font-bold theme-urban-text'}
-            `}
-            style={{
-              backgroundColor: themeMode === 'urban' ? theme.colors.secondary : undefined,
-              color: themeMode === 'urban' ? '#000' : undefined,
-              fontWeight: themeMode === 'urban' ? theme.typography.bodyWeight : undefined,
-            }}
-          >
-            Coming Soon
-          </span>
         </div>
+
+        <div className="grid grid-cols-2 gap-12 items-center">
 
         <div className="mb-6">
           <p 
             className={`
-              font-medium mb-2
+              font-medium mb-1
               ${themeMode === 'corporate' ? 'text-neutral-700' : 'text-white theme-urban-text'}
             `}
             style={{
@@ -70,10 +57,10 @@ export default function MockAudioPlayer({ topic, disabled }: MockAudioPlayerProp
             }}
           >
             Learning about:
-          </p>
+          </p> 
           <p 
             className={`
-              text-lg
+              text-lg mb-4
               ${themeMode === 'corporate' ? 'text-brand-primary' : 'text-accent font-bold theme-urban-text'}
             `}
             style={{
@@ -85,23 +72,17 @@ export default function MockAudioPlayer({ topic, disabled }: MockAudioPlayerProp
           >
             {topic}
           </p>
+          <div>
+            <img src="/img/akademik.png" alt="Akademik" className="w-full h-auto shadow-xl" />
+          </div>
         </div>
 
-        <AudioControls disabled={disabled} />
+        <div>
+          <AudioControls disabled={disabled} />
+        </div>
 
-        <p 
-          className={`
-            mt-6 text-center text-sm
-            ${themeMode === 'corporate' ? 'text-neutral-500' : 'text-secondary font-bold theme-urban-text'}
-          `}
-          style={{
-            color: themeMode === 'urban' ? theme.colors.secondary : undefined,
-            fontFamily: theme.typography.fontFamily,
-            textShadow: theme.typography.textShadow,
-          }}
-        >
-          Audio playback will be available once connected to LLM API
-        </p>
+        </div>
+
       </div>
     </div>
   );
