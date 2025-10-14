@@ -5,10 +5,7 @@ import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import type { VoiceGenerationRequest, AudioGenerationResponse } from '@/app/types/audio';
 
-// Initialize ElevenLabs client
-const elevenlabs = new ElevenLabsClient({
-  apiKey: process.env.ELEVENLABS_API_KEY,
-});
+// ElevenLabs client initialization moved inside POST handler to prevent build-time errors
 
 // Voice ID for educational rap style (Adam voice - deep and authoritative)
 // Can be overridden in request body
@@ -44,6 +41,11 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Initialize ElevenLabs client (at runtime to avoid build-time errors)
+    const elevenlabs = new ElevenLabsClient({
+      apiKey: process.env.ELEVENLABS_API_KEY,
+    });
 
     // Generate voice audio using ElevenLabs
     const audio = await elevenlabs.textToSpeech.convert(voiceId, {
