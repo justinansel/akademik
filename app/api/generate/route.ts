@@ -19,25 +19,24 @@ export async function POST(request: Request) {
       );
     }
 
-    // Call OpenAI with provided prompt configuration
-    const response = await openai.responses.create({
-        model: "gpt-4.1-mini",
-        instructions: "You are a 1980s/1990s rapper - think like you're Tupac or Biggie or Wu-Tang Clan or Will Smith.",
-        input: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "input_text", // ✅ correct type
-                text: `Write a short 45-60 second rap battle about: ${topic}`,
-              },
-            ],
-          },
-        ],
-      } as any);
-      
+    // Call OpenAI with standard Chat Completions API
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini", // Using gpt-4o-mini (faster and cheaper than gpt-4)
+      messages: [
+        {
+          role: "system",
+          content: "You are a 1980s/1990s rapper - think like you're Tupac or Biggie or Wu-Tang Clan or Will Smith."
+        },
+        {
+          role: "user",
+          content: `Write a short 45-60 second rap battle about: ${topic}`
+        }
+      ],
+      temperature: 0.8, // Higher temperature for more creative/varied lyrics
+      max_tokens: 500, // Limit response length for a 45-60 second rap
+    });
 
-    const content = response.output_text || '';
+    const content = response.choices[0]?.message?.content || '';
 
     // Handle empty content
     // if (!content.trim()) {

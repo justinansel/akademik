@@ -1,7 +1,7 @@
 import type { MockAudioPlayerProps } from '@/app/types/homepage';
 import { useTheme } from '@/app/hooks/useTheme';
 import AudioControls from './AudioControls';
-// import AudioPlayer from './AudioPlayer'; // DISABLED: Feature 005 - Audio generation disabled
+import AudioPlayer from './AudioPlayer';
 import GeneratedContent from './GeneratedContent';
 import ErrorMessage from './ErrorMessage';
 
@@ -104,9 +104,14 @@ export default function MockAudioPlayer({
            {isGenerating ? (
              <div className="text-center py-8">
                <p className="text-neutral-600 animate-pulse">
-                 Preparing your learning experience...
+                 {generationStatus === 'generating-voice' && 'Creating voice narration...'}
+                 {generationStatus === 'generating-music' && 'Generating background music...'}
+                 {generationStatus === 'mixing' && 'Mixing audio tracks...'}
+                 {(!generationStatus || generationStatus === 'idle') && 'Preparing your learning experience...'}
                </p>
              </div>
+           ) : audioUrl ? (
+             <AudioPlayer audioUrl={audioUrl} />
            ) : (
              <AudioControls disabled={true} />
            )}

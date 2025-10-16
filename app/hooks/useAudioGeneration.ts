@@ -17,12 +17,6 @@ export function useAudioGeneration() {
   const previousAudioUrls = useRef<string[]>([]);
 
   const generate = useCallback(async (lyrics: string) => {
-    // DISABLED: Audio generation feature temporarily disabled (Feature 005)
-    // All audio code preserved but not invoked for future reactivation
-    // To re-enable: remove this early return and the comment above
-    return;
-
-    // ===== ORIGINAL CODE PRESERVED BELOW (NOT EXECUTED) =====
     // Prevent concurrent generations
     if (status !== 'idle' && status !== 'ready' && status !== 'error') {
       return;
