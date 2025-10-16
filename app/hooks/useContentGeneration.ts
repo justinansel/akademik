@@ -10,13 +10,22 @@ export function useContentGeneration() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const isGeneratingRef = useRef<boolean>(false);
+  const currentTopicRef = useRef<string | null>(null);
 
   const generate = useCallback(async (topic: string) => {
-    // Prevent concurrent generations
-    if (isGenerating) {
+    // Prevent duplicate requests for same topic
+    if (currentTopicRef.current === topic) {
       return;
     }
 
+    // Prevent concurrent generations using ref
+    if (isGeneratingRef.current) {
+      return;
+    }
+
+    isGeneratingRef.current = true;
+    currentTopicRef.current = topic;
     setIsGenerating(true);
     setError(null);
 
@@ -28,11 +37,20 @@ export function useContentGeneration() {
       setContent('Content unavailable for this topic');
     } finally {
       setIsGenerating(false);
+      isGeneratingRef.current = false;
     }
-  }, [isGenerating]);
+  }, []); // Remove isGenerating dependency to prevent function recreation
 
   const clearError = useCallback(() => {
     setError(null);
+  }, []);
+
+  const reset = useCallback(() => {
+    setContent(null);
+    setIsGenerating(false);
+    setError(null);
+    isGeneratingRef.current = false;
+    currentTopicRef.current = null;
   }, []);
 
   return {
@@ -41,6 +59,7 @@ export function useContentGeneration() {
     error,
     generate,
     clearError,
+    reset,
   };
 }
 

@@ -15,12 +15,27 @@ export function useAudioGeneration() {
   const [status, setStatus] = useState<AudioGenerationStatus>('idle');
   const [error, setError] = useState<string | undefined>(undefined);
   const previousAudioUrls = useRef<string[]>([]);
+  const isGeneratingRef = useRef<boolean>(false);
+  const currentContentRef = useRef<string | null>(null);
 
   const generate = useCallback(async (lyrics: string) => {
-    // Prevent concurrent generations
+    // Prevent duplicate requests for same content
+    if (currentContentRef.current === lyrics) {
+      return;
+    }
+
+    // Prevent concurrent generations using ref for immediate check
+    if (isGeneratingRef.current) {
+      return;
+    }
+
+    // Double-check status
     if (status !== 'idle' && status !== 'ready' && status !== 'error') {
       return;
     }
+
+    isGeneratingRef.current = true;
+    currentContentRef.current = lyrics;
 
     try {
       // Cleanup previous audio files before starting new generation
@@ -61,11 +76,22 @@ export function useAudioGeneration() {
         await cleanupAudioFiles(previousAudioUrls.current);
         previousAudioUrls.current = [];
       }
+    } finally {
+      isGeneratingRef.current = false;
+      // Don't clear currentContentRef here - keep it to prevent duplicates
     }
-  }, [status]);
+  }, []); // Remove status dependency to prevent function recreation
 
   const clearError = useCallback(() => {
     setError(undefined);
+  }, []);
+
+  const reset = useCallback(() => {
+    setAudioUrl(undefined);
+    setStatus('idle');
+    setError(undefined);
+    isGeneratingRef.current = false;
+    currentContentRef.current = null;
   }, []);
 
   return {
@@ -75,6 +101,7 @@ export function useAudioGeneration() {
     error,
     generate,
     clearError,
+    reset,
   };
 }
 

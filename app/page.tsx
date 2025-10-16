@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { ThemeProvider } from './components/common/ThemeProvider';
 import { useTheme } from './hooks/useTheme';
 import { useSubmissionState } from './hooks/useSubmissionState';
@@ -18,12 +18,16 @@ function HomePageContent() {
   const { state, currentTopic, inputValue, setInputValue, submit } = useSubmissionState();
   const { isValid } = useInputValidation(inputValue);
   const { themeMode, theme, transformToUrban } = useTheme();
-  const { content, isGenerating, error, generate, clearError } = useContentGeneration();
-  const { audioUrl, isGenerating: isGeneratingAudio, error: audioError, status: audioStatus, generate: generateAudio } = useAudioGeneration();
+  const { content, isGenerating, error, generate, clearError, reset: resetContent } = useContentGeneration();
+  const { audioUrl, isGenerating: isGeneratingAudio, error: audioError, status: audioStatus, generate: generateAudio, reset: resetAudio } = useAudioGeneration();
+  const audioTriggeredRef = useRef<string | null>(null);
 
   const handleSubmit = async () => {
     if (isValid) {
       clearError();  // Clear previous errors
+      resetContent(); // Reset content generation state
+      resetAudio();  // Reset audio generation state
+      audioTriggeredRef.current = null; // Reset audio trigger tracking
       submit(inputValue);
       // Generate content instead of waiting for mock timer
       await generate(inputValue);
@@ -32,14 +36,19 @@ function HomePageContent() {
 
   // Trigger audio generation after lyrics are ready
   useEffect(() => {
-    if (content && !isGenerating && !audioUrl && !isGeneratingAudio) {
+    if (content && !isGenerating && !audioUrl && !isGeneratingAudio && audioStatus === 'idle' && audioTriggeredRef.current !== content) {
+      console.log('Triggering audio generation for content:', content.substring(0, 50) + '...');
+      audioTriggeredRef.current = content; // Mark this content as triggered
       generateAudio(content);
     }
-  }, [content, isGenerating, audioUrl, isGeneratingAudio, generateAudio]);
+  }, [content, isGenerating, audioUrl, isGeneratingAudio, audioStatus]); // Removed generateAudio from deps to prevent infinite loop
 
   const handleRetry = async () => {
     if (currentTopic) {
       clearError();
+      resetContent(); // Reset content generation state
+      resetAudio();  // Reset audio generation state
+      audioTriggeredRef.current = null; // Reset audio trigger tracking
       await generate(currentTopic.text);
     }
   };
